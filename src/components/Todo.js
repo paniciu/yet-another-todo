@@ -1,9 +1,13 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+    display: flex;
+    justify-content: center;
+`
 
 export default props => (
-    <div style={{
-            display: 'flex', justifyContent: 'center'
-    }}>
+    <Wrapper>
         <div 
             style={{
                 textDecoration: props.todo.complete ? 'line-through' : ''
@@ -13,6 +17,6 @@ export default props => (
             {props.todo.name}
         </div>
         <button onClick={props.onDelete}>x</button>
-    </div>
+    </Wrapper>
     
 );

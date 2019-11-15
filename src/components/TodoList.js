@@ -58,28 +58,31 @@ export default class TodoList extends React.Component {
             todos = this.state.todos.filter(todo => todo.complete)
         }
 
-        return <div>
-            <TodoForm onSubmited={this.addTodo} />
-            {todos.map(todo => (
-                <Todo 
-                    key={todo.id}
-                    toggleComplete={() => this.toggleComplete(todo.id)}
-                    onDelete={() => this.handleDelete(todo.id)}
-                    todo={todo} />
-            ))}
+        return <div className="main-content">
             <div>
-                todos left: {this.state.todos.filter(todo => !todo.complete).length}
+                <TodoForm onSubmited={this.addTodo} />
+                {todos.map(todo => (
+                    <Todo 
+                        key={todo.id}
+                        toggleComplete={() => this.toggleComplete(todo.id)}
+                        onDelete={() => this.handleDelete(todo.id)}
+                        todo={todo} />
+                ))}
+                <div>
+                    todos left: {this.state.todos.filter(todo => !todo.complete).length}
+                </div>
+                <div>
+                    <button onClick={() => this.updateToShow('all')}>all</button>
+                    <button onClick={() => this.updateToShow('active')}>active</button>
+                    <button onClick={() => this.updateToShow('complete')}>complete</button>
+                </div>
+                {this.state.todos.some(todo => todo.complete) ? (
+                <div>
+                    <button onClick={this.deleteAllComplete}>Delete completed</button>
+                </div>
+                ) : null}
             </div>
-            <div>
-                <button onClick={() => this.updateToShow('all')}>all</button>
-                <button onClick={() => this.updateToShow('active')}>active</button>
-                <button onClick={() => this.updateToShow('complete')}>complete</button>
-            </div>
-            {this.state.todos.some(todo => todo.complete) ? (
-            <div>
-                <button onClick={this.deleteAllComplete}>Delete completed</button>
-            </div>
-            ) : null}
+            
         </div>
     };
 }
