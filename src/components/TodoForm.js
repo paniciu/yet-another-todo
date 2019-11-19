@@ -1,9 +1,11 @@
 import React from 'react';
 import shortid from 'shortid';
+import { Button } from '../styles/Elements';
 
 export default class TodoForm extends React.Component {
     state = {
-        name: ''
+        name: '',
+        hidden: true
     };
 
     handleChange = event => {
@@ -14,14 +16,21 @@ export default class TodoForm extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        this.props.onSubmited({
-            id: shortid.generate(),
-            name: this.state.name,
-            complete: false
-        });
-        this.setState({
-            name: ''
-        });
+        if(this.state.name === '') {
+            this.setState({
+                hidden: false
+            })
+        } else {
+            this.props.onSubmited({
+                id: shortid.generate(),
+                name: this.state.name,
+                complete: false
+            });
+            this.setState({
+                name: '',
+                hidden: true
+            });
+        }
     };
 
     render() {
@@ -33,7 +42,8 @@ export default class TodoForm extends React.Component {
                     onChange={this.handleChange}
                     placeholder='Todo...'
                 />
-                <button onClick={this.handleSubmit}>Add todo</button>
+                <Button onClick={this.handleSubmit} primary>Add todo</Button>
+                <p className={'error'} hidden={this.state.hidden}>Add a todo first...</p>
             </form>
         );
     }

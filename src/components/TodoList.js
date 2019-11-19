@@ -1,6 +1,21 @@
 import React from 'react';
 import TodoForm from './TodoForm';
 import Todo from './Todo';
+import styled from 'styled-components';
+import { Button } from '../styles/Elements';
+
+const Wrapper = styled.div`
+    padding: 25px;
+    text-align: center;
+    color: white;
+    width: 50vw;
+    min-height: 50vh;
+    background-color: rgba(255,255,255, .4);
+    box-shadow: 0px 5px 12px -5px rgba(0,0,0,0.75);
+`
+const H1 = styled.h1`
+    font-size: 30px;
+`
 
 export default class TodoList extends React.Component {
     state = {
@@ -29,6 +44,7 @@ export default class TodoList extends React.Component {
         }));
     };
 
+    // Show all/active/complete
     updateToShow = s => {
         this.setState({
             toShow: s
@@ -38,12 +54,6 @@ export default class TodoList extends React.Component {
     handleDelete = id => {
         this.setState(state => ({
             todos: state.todos.filter(todo => todo.id !== id)
-        }));
-    };
-
-    deleteAllComplete = () => {
-        this.setState(state => ({
-            todos: state.todos.filter(todo => !todo.complete)
         }));
     };
 
@@ -58,8 +68,8 @@ export default class TodoList extends React.Component {
             todos = this.state.todos.filter(todo => todo.complete)
         }
 
-        return <div className="main-content">
-            <div>
+        return <Wrapper>
+                <H1>Todo or not todo...</H1>
                 <TodoForm onSubmited={this.addTodo} />
                 {todos.map(todo => (
                     <Todo 
@@ -68,21 +78,20 @@ export default class TodoList extends React.Component {
                         onDelete={() => this.handleDelete(todo.id)}
                         todo={todo} />
                 ))}
-                <div>
-                    todos left: {this.state.todos.filter(todo => !todo.complete).length}
-                </div>
-                <div>
-                    <button onClick={() => this.updateToShow('all')}>all</button>
-                    <button onClick={() => this.updateToShow('active')}>active</button>
-                    <button onClick={() => this.updateToShow('complete')}>complete</button>
-                </div>
-                {this.state.todos.some(todo => todo.complete) ? (
-                <div>
-                    <button onClick={this.deleteAllComplete}>Delete completed</button>
-                </div>
-                ) : null}
-            </div>
-            
-        </div>
+                {this.state.todos.length === 0 ? (
+                    <p>You have no todos !</p>
+                ) : (
+                    <div>
+                        <p>Todos left: {this.state.todos.filter(todo => !todo.complete).length}</p>
+                        <div>
+                            <Button onClick={() => this.updateToShow('all')}>all</Button>
+                            <Button onClick={() => this.updateToShow('active')}>active</Button>
+                            <Button onClick={() => this.updateToShow('complete')}>completed</Button>
+                        </div>
+                    </div>
+                )}
+                
+            </Wrapper>
+        
     };
 }
